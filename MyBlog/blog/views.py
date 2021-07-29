@@ -55,12 +55,21 @@ class DeleteUserView(View, LoginRequiredMixin):
 
 class SubsListView(ListView, LoginRequiredMixin):
     def get(self, request, ordering='AZ', *args, **kwargs):
-        qs = UserFollowing.objects.filter(user=request.user).values_list('following', flat=True)
-        lst_of_ids = list(qs)
-        ar_qs = AlreadyRead.objects.filter(user=request.user).values_list('post_id', flat=True)
-        lst_of_ar = list(ar_qs)
-        post_list = Post.objects.filter(author__in=lst_of_ids).exclude(id__in=lst_of_ar).order_by('-date')
-        # post_list = Post.objects.filter(author=request.user)
+        already_read_queryset = list(AlreadyRead.objects.filter(user=request.user).values_list('post_id', flat=True))
+        followers_queryset = list(UserFollowing.objects.filter(user=request.user).values_list('following', flat=True))
+        post_list = Post.objects.filter(author__in=followers_queryset).exclude(id__in=already_read_queryset).order_by('-date')
+        template_name = 'blog/subs_list.html'
+        context = {'post_list': post_list}
+        return render(request, template_name, context)
+
+
+class AddAlreadyReadView(View, LoginRequiredMixin):
+    def get(self, request, ordering='AZ', *args, **kwargs):
+        post = get_object_or_404(Post, id=self.kwargs['id'])
+        AlreadyRead.objects.get_or_create(user=request.user, post=post)
+        already_read_queryset = list(AlreadyRead.objects.filter(user=request.user).values_list('post_id', flat=True))
+        followers_queryset = list(UserFollowing.objects.filter(user=request.user).values_list('following', flat=True))
+        post_list = Post.objects.filter(author__in=followers_queryset).exclude(id__in=already_read_queryset).order_by('-date')
         template_name = 'blog/subs_list.html'
         context = {'post_list': post_list}
         return render(request, template_name, context)

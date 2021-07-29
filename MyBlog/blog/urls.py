@@ -11,4 +11,5 @@ urlpatterns = [
     path('add_user/<str:username>/', views.AddUserView.as_view(), name='add_user'),
     path('delete_user/<str:username>/', views.DeleteUserView.as_view(), name='delete_user'),
     path('<str:username>/', views.UserPostListView.as_view(), name='user_post_list'),
+    path('alreadyread/<int:id>', views.AddAlreadyReadView.as_view(), name='already_read'),
 ]

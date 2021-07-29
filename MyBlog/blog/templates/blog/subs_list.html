@@ -9,6 +9,7 @@
    {# <a href="{% url 'blog:delete_user' post.user%}">Unsubsсribe</a> #}
     <br>
     {{ post.date }}
+    <a href="{% url 'blog:already_read' post.id%}">Already read</a>
     {% endfor %}
 </ul>
 {% endblock %}
