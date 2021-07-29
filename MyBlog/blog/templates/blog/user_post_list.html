@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<h1>Blog of {{blog_author_name}}</h1>
+{% if user_in_list %}
+    You are already subscribed. You can <a href="{% url 'blog:delete_user' blog_author_name%}">Unsubsсribe</a>
+    {% else %}
+    <a href="{% url 'blog:add_user' blog_author_name%}">Subscribe</a>
+    {% endif %}
+<ul>
+    {% for post in post_list %}
+    <h1>{{ post.title }}</h1>
+    {{ post.text }}
+    <br>
+    {{ post.date }}
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<ul>
+    {% for post in post_list %}
+    <h1>{{ post.title }}</h1>
+    {{ post.text }}
+    <br>
+    <a href="{% url 'blog:user_post_list' post.author%}">{{ post.author }}</a>
+   {# <a href="{% url 'blog:delete_user' post.user%}">Unsubsсribe</a> #}
+    <br>
+    {{ post.date }}
+    {% endfor %}
+</ul>
+{% endblock %}
