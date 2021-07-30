@@ -1,3 +1,8 @@
+{% url 'blog:subs_post_list' as subs_url%}
+{% url 'blog:my_post_list' as my_post_url%}
+{% url 'blog:post_list' as post_list_url%}
+
+
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -13,21 +18,41 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light container" style="background-color: #e3f2fd;">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item {% if request.path == subs_url %}active {% endif %}	">
     <a href="{% url 'blog:subs_post_list' %}">Home</a>&nbsp&nbsp&nbsp
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a href="{% url 'blog:my_post_list' %}">My Blog</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="nav-link" href="{% url 'blog:post_list'%}">All Posts</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+          </li>
+          <li class="nav-item {% if request.path == my_post_url %}active {% endif %}">
+    <a href="{% url 'blog:my_post_list' %}">My Blog</a>&nbsp&nbsp&nbsp
+          </li>
+          <li class="nav-item {% if request.path == post_list_url%}active {% endif %}">
+    <a href="{% url 'blog:post_list'%}">All Posts</a>
+          </li>
+          {% if user.is_authenticated%}
+          {% else %}
+
+            {% endif %}
+          {% if user.is_authenticated%}
+          <li class="nav-item ">
+            {# <a class="nav-link" href="{% url 'accounts:logout'%}">Выйти</a>#}
+          </li>
+          {% else %}
+          <li class="nav-item ">
+            {# <a class="nav-link" href="{% url 'accounts:login'%}">Войти</a>#}
+          </li>
+          <li class="nav-item ">
+           {#  <a class="nav-link" href="{% url 'accounts:register'%}">Регистрация</a>#}
+          </li>
+          {% endif %}
+
+        </ul>
+      </div>
+
 </nav>
 <div class="container">
     {% if request.user.is_authenticated %}

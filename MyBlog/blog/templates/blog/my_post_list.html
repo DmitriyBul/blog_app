@@ -1,6 +1,7 @@
 {% extends "blog/base.html" %}
 
 {% block content %}
+<a href="{% url 'blog:post_create' %}">Create new post</a>
 <ul>
     {% for post in post_list %}
     <h1>{{ post.title }}</h1>
@@ -10,6 +11,8 @@
    {# <a href="{% url 'blog:delete_user' post.user%}">Unsubsсribe</a> #}
     <br>
     {{ post.date }}
+    <a href="{% url 'blog:post_edit' post.id%}">Edit post</a>
+    <a href="{% url 'blog:post_delete' post.id%}">Delete post</a>
     {% endfor %}
 </ul>
 {% endblock %}
